@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
@@ -15,6 +16,7 @@ import java.io.IOException;
  */
 public class Main extends Application {
     Label label;
+    Button button;
 
     public static void main (String[] args) {
         launch(args);                               // Initialisation de JavaFX
@@ -33,5 +35,19 @@ public class Main extends Application {
         var scene = new Scene(layout, 600, 480);    // Création du graphe de scène
         stage.setScene(scene);                      // Placement de la scène dans la fenêtre
         stage.show();                               // Affichage de la fenêtre
+
+        button = new Button();
+        button.setText("Préciser");
+        button.setOnAction(e -> label.setText("Mésange bleue")); // Lambda expression
+        layout.getChildren().add(button);
+    }
+
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(
+        HelloApplication.class.getResource("hello-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        stage.setTitle("Hello");
+        stage.setScene(scene);
+        stage.show();
     }
 }
