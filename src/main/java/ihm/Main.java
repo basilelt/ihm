@@ -1,0 +1,37 @@
+package ihm;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
+import java.io.IOException;
+
+/**
+ * JavaFX App
+ */
+public class Main extends Application {
+    Label label;
+
+    public static void main (String[] args) {
+        launch(args);                               // Initialisation de JavaFX
+    }
+    
+    // Appelée par JavaFX pour initialiser la fenêtre
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage.setTitle("Projet initial");           // Titre de la fenêtre
+        label = new Label();                        // Création d'un composant
+        label.setText("Mésange");                   // Changement de la valeur d'une propriété
+        var layout = new VBox();                    // Création d'un conteneur// Création d'un conteneur
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().add(label);            // Imbrication du label dans le conteneur
+
+        var scene = new Scene(layout, 600, 480);    // Création du graphe de scène
+        stage.setScene(scene);                      // Placement de la scène dans la fenêtre
+        stage.show();                               // Affichage de la fenêtre
+    }
+}
