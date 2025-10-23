@@ -1,10 +1,10 @@
 package ensisa.lines;
+
 import javafx.scene.input.MouseEvent;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import ensisa.lines.tools.Tool;
 import ensisa.lines.model.DrawTool;
-
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -48,8 +48,12 @@ public class MainController {
         currentTool = new SimpleObjectProperty<>(new DrawTool(this));
     }
 
-    public ObjectProperty<Tool> currentToolProperty() {
-        return currentTool;
+    public LinesEditor getLinesEditor() {
+        return linesEditor;
+    }
+
+    public Document getDocument() {
+        return document;
     }
 
     public Tool getCurrentTool() {
@@ -60,16 +64,8 @@ public class MainController {
         this.currentTool.set(currentTool);
     }
 
-    public void initialize() {
-        linesEditor = new LinesEditor(editorPane);
-        observeDocument();
-
-        StraightLine l = new StraightLine();
-        l.setStartX(10);
-        l.setStartY(20);
-        l.setEndX(300);
-        l.setEndY(60);
-        document.getLines().add(l);
+    public ObjectProperty<Tool> currentToolProperty() {
+        return currentTool;
     }
 
     private void observeDocument() {
@@ -89,11 +85,25 @@ public class MainController {
         });
     }
 
-    public LinesEditor getLinesEditor() {
-        return linesEditor;
+    private void setClipping() {
+        final Rectangle clip = new Rectangle();
+        editorPane.setClip(clip);
+        editorPane.layoutBoundsProperty().addListener((v, oldValue, newValue) -> {
+            clip.setWidth(newValue.getWidth());
+            clip.setHeight(newValue.getHeight());
+        });
     }
 
-    public Document getDocument() {
-        return document;
+    public void initialize() {
+        linesEditor = new LinesEditor(editorPane);
+        setClipping();
+        observeDocument();
+
+        StraightLine l = new StraightLine();
+        l.setStartX(10);
+        l.setStartY(20);
+        l.setEndX(300);
+        l.setEndY(60);
+        document.getLines().add(l);
     }
 }
