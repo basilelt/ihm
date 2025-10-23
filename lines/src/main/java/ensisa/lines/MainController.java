@@ -1,4 +1,10 @@
 package ensisa.lines;
+import javafx.scene.input.MouseEvent;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import ensisa.lines.tools.Tool;
+import ensisa.lines.model.DrawTool;
+
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,12 +21,27 @@ public class MainController {
         Platform.exit();
     }
 
+    @FXML
+    public Pane editorPane;
+
+    @FXML
+    private void mousePressedInEditor(MouseEvent event) {
+        getCurrentTool().mousePressed(event);
+    }
+
+    @FXML
+    private void mouseDraggedInEditor(MouseEvent event) {
+        getCurrentTool().mouseDragged(event);
+    }
+
+    @FXML
+    private void mouseReleasedInEditor(MouseEvent event) {
+        getCurrentTool().mouseReleased(event);
+    }
+
     private final Document document;
     private LinesEditor linesEditor;
     private final ObjectProperty<Tool> currentTool;
-
-    @FXML
-    public Pane editorPane;
 
     public MainController() {
         document = new Document();

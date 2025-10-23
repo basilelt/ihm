@@ -1,4 +1,5 @@
 module ensisa.lines {
+    requires javafx.base;
     requires javafx.controls;
     requires javafx.fxml;
 
