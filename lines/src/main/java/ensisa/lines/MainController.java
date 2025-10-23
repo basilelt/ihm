@@ -17,12 +17,26 @@ public class MainController {
 
     private final Document document;
     private LinesEditor linesEditor;
+    private final ObjectProperty<Tool> currentTool;
 
     @FXML
     public Pane editorPane;
 
     public MainController() {
         document = new Document();
+        currentTool = new SimpleObjectProperty<>(new DrawTool(this));
+    }
+
+    public ObjectProperty<Tool> currentToolProperty() {
+        return currentTool;
+    }
+
+    public Tool getCurrentTool() {
+        return currentTool.get();
+    }
+
+    public void setCurrentTool(Tool currentTool) {
+        this.currentTool.set(currentTool);
     }
 
     public void initialize() {
