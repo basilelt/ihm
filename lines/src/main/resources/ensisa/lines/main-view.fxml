@@ -37,7 +37,7 @@
         </MenuBar>
       </top>
       <center>
-        <Pane fx:id="editorPane" onMouseDragged="#mouseDraggedInEditor" onMousePressed="#mousePressedInEditor" onMouseReleased="#mouseReleasedInEditor" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
+        <Pane fx:id="editorPane" onMouseDragged="#mouseDraggedInEditor" onMouseEntered="#mouseEntered" onMouseExited="#mouseExited" onMousePressed="#mousePressedInEditor" onMouseReleased="#mouseReleasedInEditor" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
       </center>
     </BorderPane>
   </children>

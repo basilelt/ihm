@@ -1,9 +1,10 @@
 package ensisa.lines.model;
+
 import ensisa.lines.tools.Tool;
 import javafx.scene.input.MouseEvent;
 import ensisa.lines.MainController;
 import ensisa.lines.model.StraightLine;
-
+import javafx.scene.Cursor;
 
 public class DrawTool implements Tool {
     enum State {
@@ -43,5 +44,15 @@ public class DrawTool implements Tool {
     @Override
     public void mouseReleased(MouseEvent event) {
         state = State.initial;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent event) {
+        mainController.editorPane.setCursor(Cursor.CROSSHAIR);
+    }
+
+    @Override
+    public void mouseExited(MouseEvent event) {
+        mainController.editorPane.setCursor(Cursor.DEFAULT);
     }
 }

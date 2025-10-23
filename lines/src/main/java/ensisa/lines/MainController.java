@@ -14,6 +14,7 @@ import ensisa.lines.model.Document;
 import ensisa.lines.model.LinesEditor;
 import ensisa.lines.model.StraightLine;
 import javafx.collections.ListChangeListener;
+import javafx.scene.shape.Rectangle;
 
 public class MainController {
     @FXML
@@ -37,6 +38,16 @@ public class MainController {
     @FXML
     private void mouseReleasedInEditor(MouseEvent event) {
         getCurrentTool().mouseReleased(event);
+    }
+
+    @FXML
+    private void mouseEntered(MouseEvent event) {
+        getCurrentTool().mouseEntered(event);
+    }
+
+    @FXML
+    void mouseExited(MouseEvent event) {
+        getCurrentTool().mouseExited(event);
     }
 
     private final Document document;
