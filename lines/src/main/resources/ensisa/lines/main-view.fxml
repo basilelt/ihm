@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ensisa.lines.MainController">
    <children>
-      <BorderPane layoutY="-1.0" prefHeight="400.0" prefWidth="600.0">
+      <BorderPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" prefHeight="400.0" prefWidth="600.0">
          <top>
             <MenuBar BorderPane.alignment="CENTER">
               <menus>
@@ -38,7 +38,7 @@
             </MenuBar>
          </top>
          <center>
-            <Pane id="editorPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
+            <Pane fx:id="editorPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </children>
