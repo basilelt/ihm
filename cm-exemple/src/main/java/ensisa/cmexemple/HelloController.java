@@ -1,4 +1,4 @@
-package ensisa.ihm;
+package ensisa.cmexemple;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

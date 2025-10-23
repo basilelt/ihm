@@ -1,4 +1,4 @@
-package ensisa.ihm;
+package ensisa.cmexemple;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

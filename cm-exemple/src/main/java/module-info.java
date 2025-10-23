@@ -1,9 +1,9 @@
-module ensisa.ihm {
+module ensisa.cmexemple {
     requires javafx.controls;
     requires javafx.fxml;
     requires transitive javafx.graphics;
 
-    opens ensisa.ihm to javafx.fxml;
+    opens ensisa.cmexemple to javafx.fxml;
 
-    exports ensisa.ihm;
+    exports ensisa.cmexemple;
 }
