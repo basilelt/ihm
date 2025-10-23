@@ -1,4 +1,4 @@
-package ihm;
+package ensisa.ihm;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class Main {
 
-    public static void main (String[] args) {
-        Application.launch(HelloApplication.class, args);                               // Initialisation de JavaFX
+    public static void main(String[] args) {
+        Application.launch(HelloApplication.class, args); // Initialisation de JavaFX
     }
 }
