@@ -20,9 +20,9 @@
     </properties>
 
     <modules>
-        <module>cm-exemple</module>
-        <module>lines</module>
-        <module>birds</module>
+        <module>ensisa.cm-exemple</module>
+        <module>ensisa.lines</module>
+        <module>ensisa.birds</module>
     </modules>
 
     <dependencyManagement>
