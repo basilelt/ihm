@@ -41,6 +41,7 @@ public class MainController {
         specieLabel.textProperty().bind(currentBird.specieProperty());
         descriptionLabel.textProperty().bind(currentBird.descriptionProperty());
         birdImageView.imageProperty().bind(currentBird.imageProperty());
+        birdListView.setCellFactory(new BirdCellFactory());
         birdListView.setItems(repository.birds);
     }
 }
