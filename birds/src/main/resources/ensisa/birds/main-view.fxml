@@ -24,16 +24,32 @@
                <children>
                   <VBox alignment="CENTER_LEFT" prefWidth="200.0">
                      <children>
-                        <Label fx:id="familyLabel" text="Label" />
-                        <Label fx:id="genusLabel" text="Label" />
-                        <Label fx:id="specieLabel" text="Label" />
+                        <Label fx:id="familyLabel" text="Label">
+                           <font>
+                              <Font name="Arial Italic" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="genusLabel" text="Label">
+                           <font>
+                              <Font name="Arial Italic" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="specieLabel" text="Label">
+                           <font>
+                              <Font name="Arial Italic" size="13.0" />
+                           </font>
+                        </Label>
                      </children>
                   </VBox>
                </children>
             </HBox>
             </children>
         </VBox>
-      <Label fx:id="descriptionLabel" text="Label" textAlignment="JUSTIFY" wrapText="true" />
+      <Label fx:id="descriptionLabel" text="Label" textAlignment="JUSTIFY" wrapText="true">
+         <font>
+            <Font name="Arial" size="13.0" />
+         </font>
+      </Label>
     </children>
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
