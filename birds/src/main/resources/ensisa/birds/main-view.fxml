@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -20,7 +21,7 @@
                         <Font name="Arial" size="13.0" />
                     </font>
                 </Label>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox minHeight="-Infinity" prefHeight="300.0" prefWidth="200.0">
                <children>
                   <VBox alignment="CENTER_LEFT" prefWidth="200.0">
                      <children>
@@ -41,6 +42,7 @@
                         </Label>
                      </children>
                   </VBox>
+                  <ImageView fx:id="birdImageView" fitHeight="300.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </HBox>
             </children>

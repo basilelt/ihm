@@ -1,7 +1,6 @@
 package ensisa.birds;
 
-import ensisa.birds.model.Bird;
-import ensisa.birds.model.BirdRepository;
+import ensisa.birds.model.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -39,5 +38,6 @@ public class MainController {
         genusLabel.textProperty().bind(currentBird.genusProperty());
         specieLabel.textProperty().bind(currentBird.specieProperty());
         descriptionLabel.textProperty().bind(currentBird.descriptionProperty());
+        birdImageView.imageProperty().bind(currentBird.imageProperty());
     }
 }

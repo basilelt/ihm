@@ -1,7 +1,9 @@
 package ensisa.birds.model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javafx.beans.property.*;
+import javafx.scene.image.Image;
 
 public class Bird {
     private StringProperty family = new SimpleStringProperty(this, "family", "");
@@ -23,7 +25,6 @@ public class Bird {
     public void setFamily(String family) {
         this.family.set(family);
     }
-
 
     public String getGenus() {
         return genus.get();
@@ -97,5 +98,18 @@ public class Bird {
         this.imagePath.set(imagePath);
     }
 
+    @JsonIgnore
+    private Property<Image> image = new SimpleObjectProperty<>(this, "image");
 
+    public Image getImage() {
+        return image.getValue();
+    }
+
+    public Property<Image> imageProperty() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image.setValue(image);
+    }
 }
