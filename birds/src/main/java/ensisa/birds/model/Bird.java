@@ -14,6 +14,14 @@ public class Bird {
     private StringProperty description = new SimpleStringProperty(this, "description", "");
     private StringProperty imagePath = new SimpleStringProperty(this, "imagePath", "");
 
+    public Bird() {
+        image.bind(imagePath.map(path -> {
+            var url = getClass().getResource("/ensisa/birds/assets/images/" +
+                path).toExternalForm();
+                return new Image(url.toString());
+        } ));
+    }
+
     public String getFamily() {
         return family.get();
     }
