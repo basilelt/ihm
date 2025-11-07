@@ -19,11 +19,12 @@ public class MainController {
     public MainController() {
         repository = new BirdRepository();
         repository.load();
+
         currentBird = repository.birds.get(0);
     }
 
     public void initialize() {
-        commonNameLabel.setText(currentBird.getCommonName());
-        latinNameLabel.setText(currentBird.getLatinName());
+        commonNameLabel.textProperty().bind(currentBird.commonNameProperty());
+        latinNameLabel.textProperty().bind(currentBird.latinNameProperty());
     }
 }
