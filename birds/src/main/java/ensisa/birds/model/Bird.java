@@ -16,10 +16,15 @@ public class Bird {
 
     public Bird() {
         image.bind(imagePath.map(path -> {
-            var url = getClass().getResource("/ensisa/birds/assets/images/" +
-                path).toExternalForm();
-                return new Image(url.toString());
-        } ));
+            if (path == null || path.isEmpty()) {
+                return null;
+            }
+            var res = getClass().getResource("/ensisa/birds/assets/images/" + path);
+            if (res == null) {
+                return null;
+            }
+            return new Image(res.toExternalForm());
+        }));
     }
 
     public String getFamily() {
