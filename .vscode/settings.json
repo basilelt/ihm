@@ -1,5 +1,6 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.trace.server": "verbose",
+    "java.configuration.updateBuildConfiguration": "interactive",
     "java.format.settings.url": ".vscode/java-formatter.xml",
     "maven.terminal.favorites": [
         {
