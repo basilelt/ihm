@@ -1,13 +1,14 @@
 package ensisa.birds;
 
 import ensisa.birds.model.*;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 
 public class MainController {
     private BirdRepository repository;
-    public Bird currentBird;
+    private final ObjectProperty<Bird> currentBird;
 
     @FXML
     private Label commonNameLabel;
@@ -30,18 +31,34 @@ public class MainController {
         repository = new BirdRepository();
         repository.load();
 
-        currentBird = repository.birds.get(0);
+        currentBird = new SimpleObjectProperty<>(repository.birds.get(0));
+    }
+
+    public void bind(Bird bird) {
+        commonNameLabel.textProperty().bind(bird.commonNameProperty());
+        latinNameLabel.textProperty().bind(bird.latinNameProperty());
+        familyLabel.textProperty().bind(bird.familyProperty());
+        genusLabel.textProperty().bind(bird.genusProperty());
+        specieLabel.textProperty().bind(bird.specieProperty());
+        descriptionLabel.textProperty().bind(bird.descriptionProperty());
+        birdImageView.imageProperty().bind(bird.imageProperty());
     }
 
     public void initialize() {
-        commonNameLabel.textProperty().bind(currentBird.commonNameProperty());
-        latinNameLabel.textProperty().bind(currentBird.latinNameProperty());
-        familyLabel.textProperty().bind(currentBird.familyProperty());
-        genusLabel.textProperty().bind(currentBird.genusProperty());
-        specieLabel.textProperty().bind(currentBird.specieProperty());
-        descriptionLabel.textProperty().bind(currentBird.descriptionProperty());
-        birdImageView.imageProperty().bind(currentBird.imageProperty());
+        bind(getCurrentBird());
         birdListView.setCellFactory(new BirdCellFactory());
         birdListView.setItems(repository.birds);
+    }
+
+    public ObjectProperty<Bird> currentBirdProperty() {
+        return currentBird;
+    }
+
+    public Bird getCurrentBird() {
+        return currentBird.get();
+    }
+
+    public void setCurrentBird(Bird bird) {
+        currentBird.set(bird);
     }
 }
