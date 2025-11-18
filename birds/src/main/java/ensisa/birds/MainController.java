@@ -46,6 +46,14 @@ public class MainController {
         });
     }
 
+    @FXML
+    private Button deleteButton;
+
+    @FXML
+    private void deleteButtonAction(ActionEvent event) {
+        repository.birds.remove(getCurrentBird());
+    }
+
     public MainController() {
         repository = new BirdRepository();
         repository.load();
@@ -77,6 +85,8 @@ public class MainController {
         // ou
         // birdView.visibleProperty().bind(Bindings.createBooleanBinding(
         // () -> getCurrentBird() != null, currentBirdProperty()) );
+        editButton.disableProperty().bind(currentBirdProperty().isNull());
+        deleteButton.disableProperty().bind(currentBirdProperty().isNull());
     }
 
     public ObjectProperty<Bird> currentBirdProperty() {
