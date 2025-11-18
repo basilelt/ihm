@@ -3,7 +3,7 @@ package ensisa.birds.model;
 import java.io.IOException;
 import java.util.Objects;
 
-import javafx.application.Platform;
+import javafx.application.*;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.stage.*;

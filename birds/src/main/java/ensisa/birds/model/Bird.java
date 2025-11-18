@@ -3,7 +3,7 @@ package ensisa.birds.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javafx.beans.property.*;
-import javafx.scene.image.Image;
+import javafx.scene.image.*;
 
 public class Bird {
     private StringProperty family = new SimpleStringProperty(this, "family", "");

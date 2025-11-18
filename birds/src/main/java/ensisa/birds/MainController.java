@@ -3,11 +3,13 @@ package ensisa.birds;
 import ensisa.birds.model.*;
 
 import javafx.beans.property.*;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import javafx.event.*;
+import javafx.fxml.*;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
+import javafx.scene.*;
 
 public class MainController {
     private BirdRepository repository;
@@ -36,6 +38,12 @@ public class MainController {
 
     @FXML
     private void editButtonAction(ActionEvent event) {
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        BirdEditDialog dialog = new BirdEditDialog(stage, getCurrentBird());
+        dialog.showAndWait().ifPresent(bird -> {
+            getCurrentBird().copyFrom(bird);
+        });
     }
 
     public MainController() {

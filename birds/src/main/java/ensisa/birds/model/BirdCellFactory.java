@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javafx.fxml.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.util.Callback;
+import javafx.scene.layout.*;
+import javafx.util.*;
 
 public class BirdCellFactory implements Callback<ListView<Bird>, ListCell<Bird>> {
     @Override
