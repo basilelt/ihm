@@ -125,4 +125,14 @@ public class Bird {
     public void setImage(Image image) {
         this.image.setValue(image);
     }
+
+    public void copyFrom(Bird bird) {
+        setFamily(bird.getFamily());
+        setGenus(bird.getGenus());
+        setSpecie(bird.getSpecie());
+        setCommonName(bird.getCommonName());
+        setLatinName(bird.getLatinName());
+        setDescription(bird.getDescription());
+        setImagePath(bird.getImagePath());
+    }
 }

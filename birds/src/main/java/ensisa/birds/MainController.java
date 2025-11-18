@@ -1,7 +1,9 @@
 package ensisa.birds;
 
 import ensisa.birds.model.*;
+
 import javafx.beans.property.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -29,6 +31,12 @@ public class MainController {
     private ListView<Bird> birdListView;
     @FXML
     private VBox birdView;
+    @FXML
+    private Button editButton;
+
+    @FXML
+    private void editButtonAction(ActionEvent event) {
+    }
 
     public MainController() {
         repository = new BirdRepository();
