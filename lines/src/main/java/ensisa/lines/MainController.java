@@ -3,11 +3,13 @@ package ensisa.lines;
 import javafx.scene.input.MouseEvent;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import ensisa.lines.tools.SelectTool;
 import ensisa.lines.tools.Tool;
 import ensisa.lines.model.DrawTool;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
 import javafx.application.Platform;
 import ensisa.lines.model.Document;
@@ -18,12 +20,16 @@ import javafx.scene.shape.Rectangle;
 
 public class MainController {
     @FXML
+    public Pane editorPane;
+    @FXML
+    private RadioButton selectToolButton;
+    @FXML
+    private RadioButton drawToolButton;
+
+    @FXML
     private void quitMenuAction() {
         Platform.exit();
     }
-
-    @FXML
-    public Pane editorPane;
 
     @FXML
     private void mousePressedInEditor(MouseEvent event) {
@@ -50,13 +56,27 @@ public class MainController {
         getCurrentTool().mouseExited(event);
     }
 
+    @FXML
+    private void selectToolAction() {
+        setCurrentTool(selectTool);
+    }
+
+    @FXML
+    private void drawToolAction() {
+        setCurrentTool(drawTool);
+    }
+
     private final Document document;
     private LinesEditor linesEditor;
     private final ObjectProperty<Tool> currentTool;
+    private final DrawTool drawTool;
+    private final SelectTool selectTool;
 
     public MainController() {
         document = new Document();
-        currentTool = new SimpleObjectProperty<>(new DrawTool(this));
+        selectTool = new SelectTool(this);
+        drawTool = new DrawTool(this);
+        currentTool = new SimpleObjectProperty<>(selectTool);
     }
 
     public LinesEditor getLinesEditor() {
@@ -105,9 +125,18 @@ public class MainController {
         });
     }
 
+    private void initializeToolPalette() {
+        // Change style class to not paint the round button
+        selectToolButton.getStyleClass().remove("radio-button");
+        selectToolButton.getStyleClass().add("toggle-button");
+        drawToolButton.getStyleClass().remove("radio-button");
+        drawToolButton.getStyleClass().add("toggle-button");
+    }
+
     public void initialize() {
         linesEditor = new LinesEditor(editorPane);
         setClipping();
+        initializeToolPalette();
         observeDocument();
 
         StraightLine l = new StraightLine();
