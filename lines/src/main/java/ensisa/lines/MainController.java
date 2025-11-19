@@ -2,6 +2,7 @@ package ensisa.lines;
 
 import ensisa.lines.tools.*;
 import ensisa.lines.model.*;
+import ensisa.lines.commands.*;
 
 import javafx.beans.property.*;
 import javafx.fxml.*;
@@ -19,6 +20,10 @@ public class MainController {
     private RadioButton selectToolButton;
     @FXML
     private RadioButton drawToolButton;
+    @FXML
+    private MenuItem undoMenuItem;
+    @FXML
+    private MenuItem redoMenuItem;
 
     @FXML
     private void quitMenuAction() {
@@ -60,12 +65,23 @@ public class MainController {
         setCurrentTool(drawTool);
     }
 
+    @FXML
+    private void undoMenuItemAction() {
+        undoRedoHistory.undo();
+    }
+
+    @FXML
+    private void redoMenuItemAction() {
+        undoRedoHistory.redo();
+    }
+
     private final Document document;
     private LinesEditor linesEditor;
     private final ObjectProperty<Tool> currentTool;
     private final DrawTool drawTool;
     private final SelectTool selectTool;
     private final ObservableSet<StraightLine> selectedLines;
+    private final UndoRedoHistory undoRedoHistory;
 
     public MainController() {
         document = new Document();
@@ -73,6 +89,7 @@ public class MainController {
         drawTool = new DrawTool(this);
         currentTool = new SimpleObjectProperty<>(selectTool);
         selectedLines = FXCollections.observableSet();
+        undoRedoHistory = new UndoRedoHistory();
     }
 
     public ObjectProperty<Tool> currentToolProperty() {
@@ -172,10 +189,20 @@ public class MainController {
         });
     }
 
+    public void execute(UndoableCommand command) {
+        undoRedoHistory.execute(command);
+    }
+
+    private void initializeMenus() {
+        undoMenuItem.disableProperty().bind(undoRedoHistory.canUndoProperty().not());
+        redoMenuItem.disableProperty().bind(undoRedoHistory.canRedoProperty().not());
+    }
+
     public void initialize() {
         linesEditor = new LinesEditor(editorPane);
         setClipping();
         initializeToolPalette();
+        initializeMenus();
         observeDocument();
         observeSelection();
 
@@ -186,4 +213,5 @@ public class MainController {
         l.setEndY(60);
         document.getLines().add(l);
     }
+
 }
