@@ -1,6 +1,5 @@
-package ensisa.lines.model;
+package ensisa.lines.tools;
 
-import ensisa.lines.tools.Tool;
 import javafx.scene.input.MouseEvent;
 import ensisa.lines.MainController;
 import ensisa.lines.model.StraightLine;

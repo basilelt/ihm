@@ -1,22 +1,16 @@
 package ensisa.lines;
 
-import javafx.scene.input.MouseEvent;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import ensisa.lines.tools.SelectTool;
-import ensisa.lines.tools.Tool;
-import ensisa.lines.model.DrawTool;
+import ensisa.lines.tools.*;
+import ensisa.lines.model.*;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.layout.Pane;
-import javafx.application.Platform;
-import ensisa.lines.model.Document;
-import ensisa.lines.model.LinesEditor;
-import ensisa.lines.model.StraightLine;
-import javafx.collections.ListChangeListener;
-import javafx.scene.shape.Rectangle;
+import javafx.beans.property.*;
+import javafx.fxml.*;
+import javafx.scene.input.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.shape.*;
+import javafx.application.*;
+import javafx.collections.*;
 
 public class MainController {
     @FXML
@@ -71,12 +65,22 @@ public class MainController {
     private final ObjectProperty<Tool> currentTool;
     private final DrawTool drawTool;
     private final SelectTool selectTool;
+    private final ObservableSet<StraightLine> selectedLines;
 
     public MainController() {
         document = new Document();
         selectTool = new SelectTool(this);
         drawTool = new DrawTool(this);
         currentTool = new SimpleObjectProperty<>(selectTool);
+        selectedLines = FXCollections.observableSet();
+    }
+
+    public ObjectProperty<Tool> currentToolProperty() {
+        return currentTool;
+    }
+
+    public ObservableSet<StraightLine> getSelectedLines() {
+        return selectedLines;
     }
 
     public LinesEditor getLinesEditor() {
@@ -95,16 +99,13 @@ public class MainController {
         this.currentTool.set(currentTool);
     }
 
-    public ObjectProperty<Tool> currentToolProperty() {
-        return currentTool;
-    }
-
     private void observeDocument() {
         document.getLines().addListener(new ListChangeListener<StraightLine>() {
             public void onChanged(ListChangeListener.Change<? extends StraightLine> c) {
                 while (c.next()) {
                     // Des lignes ont été supprimées du modèle
                     for (StraightLine line : c.getRemoved()) {
+                        deselectLine(line);
                         linesEditor.removeLine(line);
                     }
                     // Des lignes ont été ajoutées au modèle
@@ -133,11 +134,50 @@ public class MainController {
         drawToolButton.getStyleClass().add("toggle-button");
     }
 
+    public void selectLine(StraightLine line, boolean keepSelection) {
+        if (!keepSelection)
+            getSelectedLines().clear();
+        getSelectedLines().add(line);
+    }
+
+    public void deselectLine(StraightLine line) {
+        getSelectedLines().remove(line);
+    }
+
+    public void deselectAll() {
+        getSelectedLines().clear();
+    }
+
+    public StraightLine findLineForPoint(double x, double y) {
+        for (var straightLine : getDocument().getLines()) {
+            if (linesEditor.isPointInStartSelectionSquare(x, y, straightLine)
+                    || linesEditor.isPointInEndSelectionSquare(x, y, straightLine)
+                    || linesEditor.isPointInLine(x, y, straightLine))
+                return straightLine;
+        }
+        return null;
+    }
+
+    private void observeSelection() {
+        selectedLines.addListener(new SetChangeListener<StraightLine>() {
+            @Override
+            public void onChanged(Change<? extends StraightLine> change) {
+                if (change.wasRemoved()) {
+                    linesEditor.deselectLine(change.getElementRemoved());
+                }
+                if (change.wasAdded()) {
+                    linesEditor.selectLine(change.getElementAdded());
+                }
+            }
+        });
+    }
+
     public void initialize() {
         linesEditor = new LinesEditor(editorPane);
         setClipping();
         initializeToolPalette();
         observeDocument();
+        observeSelection();
 
         StraightLine l = new StraightLine();
         l.setStartX(10);
