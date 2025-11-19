@@ -12,6 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.*;
 import javafx.application.*;
 import javafx.collections.*;
+import javafx.beans.binding.*;
 
 public class MainController {
     @FXML
@@ -24,6 +25,8 @@ public class MainController {
     private MenuItem undoMenuItem;
     @FXML
     private MenuItem redoMenuItem;
+    @FXML
+    private MenuItem deleteMenuItem;
 
     @FXML
     private void quitMenuAction() {
@@ -196,6 +199,8 @@ public class MainController {
     private void initializeMenus() {
         undoMenuItem.disableProperty().bind(undoRedoHistory.canUndoProperty().not());
         redoMenuItem.disableProperty().bind(undoRedoHistory.canRedoProperty().not());
+        deleteMenuItem.disableProperty()
+                .bind(Bindings.createBooleanBinding(() -> selectedLines.isEmpty(), selectedLines));
     }
 
     public void initialize() {
@@ -212,6 +217,11 @@ public class MainController {
         l.setEndX(300);
         l.setEndY(60);
         document.getLines().add(l);
+    }
+
+    @FXML
+    private void deleteMenuItemAction() {
+        undoRedoHistory.execute(new DeleteCommand(this));
     }
 
 }

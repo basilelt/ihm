@@ -30,6 +30,7 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Edition">
               <items>
+                        <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#deleteMenuItemAction" text="Delete" />
                         <MenuItem fx:id="undoMenuItem" mnemonicParsing="false" onAction="#undoMenuItemAction" text="Annuler">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="Z" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
