@@ -94,4 +94,11 @@ public class StraightLine {
     public void setColor(Color color) {
         this.color.set(color);
     }
+
+    public void offset(double dx, double dy) {
+        setStartX(getStartX() + dx);
+        setStartY(getStartY() + dy);
+        setEndX(getEndX() + dx);
+        setEndY(getEndY() + dy);
+    }
 }

@@ -13,11 +13,15 @@ public class SelectTool implements Tool {
     private State state;
     private MainController mainController;
     private StraightLine straightLine;
+    private double lastX;
+    private double lastY;
 
     @Override
     public void mousePressed(MouseEvent event) {
         if (event.isPrimaryButtonDown()) {
             state = State.selection;
+            lastX = event.getX();
+            lastY = event.getY();
             straightLine = mainController.findLineForPoint(event.getX(), event.getY());
             if (straightLine != null) {
                 var isSelected = mainController.getSelectedLines().contains(straightLine);
@@ -38,6 +42,23 @@ public class SelectTool implements Tool {
     @Override
     public void mouseReleased(MouseEvent event) {
         state = State.initial;
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent event) {
+        if (event.isPrimaryButtonDown()) {
+            double deltaX = event.getX() - lastX;
+            double deltaY = event.getY() - lastY;
+            switch (state) {
+            case selection:
+                for (var line : mainController.getSelectedLines()) {
+                    line.offset(deltaX, deltaY);
+                }
+                break;
+            }
+            lastX = event.getX();
+            lastY = event.getY();
+        }
     }
 
     public SelectTool(MainController controller) {
