@@ -20,9 +20,17 @@ public class SelectTool implements Tool {
             state = State.selection;
             straightLine = mainController.findLineForPoint(event.getX(), event.getY());
             if (straightLine != null) {
-                mainController.selectLine(straightLine, false);
+                var isSelected = mainController.getSelectedLines().contains(straightLine);
+                if (!event.isShiftDown()) {
+                    if (!isSelected)
+                        mainController.selectLine(straightLine, false);
+                } else if (isSelected)
+                    mainController.deselectLine(straightLine);
+                else
+                    mainController.selectLine(straightLine, true);
             } else {
-                mainController.deselectAll();
+                if (!event.isShiftDown())
+                    mainController.deselectAll();
             }
         }
     }
