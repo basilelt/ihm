@@ -30,12 +30,12 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Edition">
               <items>
-                        <MenuItem fx:id="undoMenuItem" mnemonicParsing="false" text="Annuler">
+                        <MenuItem fx:id="undoMenuItem" mnemonicParsing="false" onAction="#undoMenuItemAction" text="Annuler">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="Z" control="UP" meta="UP" shift="UP" shortcut="DOWN" />
                            </accelerator>
                         </MenuItem>
-                        <MenuItem fx:id="redoMenuItem" mnemonicParsing="false" text="Rétablir">
+                        <MenuItem fx:id="redoMenuItem" mnemonicParsing="false" onAction="#redoMenuItemAction" text="Rétablir">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="Z" control="UP" meta="UP" shift="DOWN" shortcut="DOWN" />
                            </accelerator>
