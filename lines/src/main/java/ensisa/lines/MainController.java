@@ -27,6 +27,10 @@ public class MainController {
     private MenuItem redoMenuItem;
     @FXML
     private MenuItem deleteMenuItem;
+    @FXML
+    private TextField lineWidthTextField;
+    @FXML
+    private ColorPicker colorPicker;
 
     @FXML
     private void quitMenuAction() {
@@ -76,6 +80,14 @@ public class MainController {
     @FXML
     private void redoMenuItemAction() {
         undoRedoHistory.redo();
+    }
+
+    @FXML
+    private void lineWidthTextFieldAction() {
+    }
+
+    @FXML
+    private void colorPickerAction() {
     }
 
     private final Document document;
