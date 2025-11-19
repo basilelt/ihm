@@ -9,6 +9,7 @@ import javafx.fxml.*;
 import javafx.scene.input.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.application.*;
 import javafx.collections.*;
@@ -97,6 +98,10 @@ public class MainController {
 
     @FXML
     private void colorPickerAction() {
+        var color = colorPicker.getValue();
+        selectedLines.forEach(straightLine -> {
+            straightLine.setColor(color);
+        });
     }
 
     private final Document document;
@@ -229,6 +234,7 @@ public class MainController {
             @Override
             public void onChanged(Change<? extends StraightLine> change) {
                 lineWidthTextField.setText(findCommonStrokeWidth());
+                colorPicker.setValue(findCommonColor());
             }
 
             private String findCommonStrokeWidth() {
@@ -244,6 +250,21 @@ public class MainController {
                     }
                 }
                 return foundOne ? String.valueOf(width) : "";
+            }
+
+            private Color findCommonColor() {
+                boolean foundOne = false;
+                Color color = Color.TRANSPARENT;
+                for (var l : selectedLines) {
+                    if (!foundOne) {
+                        color = l.getColor();
+                        foundOne = true;
+                    } else {
+                        if (!color.equals(l.getColor()))
+                            return Color.TRANSPARENT;
+                    }
+                }
+                return foundOne ? color : Color.TRANSPARENT;
             }
         });
     }
