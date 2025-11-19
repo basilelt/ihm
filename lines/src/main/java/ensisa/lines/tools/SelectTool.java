@@ -7,7 +7,7 @@ import javafx.scene.input.*;
 
 public class SelectTool implements Tool {
     enum State {
-        initial, selection
+        initial, selection, selectionAtStart, selectionAtEnd
     }
 
     private State state;
@@ -25,13 +25,21 @@ public class SelectTool implements Tool {
             straightLine = mainController.findLineForPoint(event.getX(), event.getY());
             if (straightLine != null) {
                 var isSelected = mainController.getSelectedLines().contains(straightLine);
-                if (!event.isShiftDown()) {
-                    if (!isSelected)
-                        mainController.selectLine(straightLine, false);
-                } else if (isSelected)
-                    mainController.deselectLine(straightLine);
-                else
-                    mainController.selectLine(straightLine, true);
+                if (isSelected && mainController.getLinesEditor().isPointInStartSelectionSquare(event.getX(),
+                        event.getY(), straightLine)) {
+                    state = State.selectionAtStart;
+                } else if (isSelected && mainController.getLinesEditor().isPointInEndSelectionSquare(event.getX(),
+                        event.getY(), straightLine)) {
+                    state = State.selectionAtEnd;
+                } else {
+                    if (!event.isShiftDown()) {
+                        if (!isSelected)
+                            mainController.selectLine(straightLine, false);
+                    } else if (isSelected)
+                        mainController.deselectLine(straightLine);
+                    else
+                        mainController.selectLine(straightLine, true);
+                }
             } else {
                 if (!event.isShiftDown())
                     mainController.deselectAll();
@@ -54,6 +62,16 @@ public class SelectTool implements Tool {
                 for (var line : mainController.getSelectedLines()) {
                     line.offset(deltaX, deltaY);
                 }
+                break;
+            case selectionAtStart: {
+                straightLine.setStartX(straightLine.getStartX() + deltaX);
+                straightLine.setStartY(straightLine.getStartY() + deltaY);
+            }
+                break;
+            case selectionAtEnd: {
+                straightLine.setEndX(straightLine.getEndX() + deltaX);
+                straightLine.setEndY(straightLine.getEndY() + deltaY);
+            }
                 break;
             }
             lastX = event.getX();
