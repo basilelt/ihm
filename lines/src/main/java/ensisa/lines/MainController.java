@@ -84,6 +84,15 @@ public class MainController {
 
     @FXML
     private void lineWidthTextFieldAction() {
+        try {
+            var value = Double.parseDouble(lineWidthTextField.getText());
+            if (value >= 1.0) {
+                selectedLines.forEach(straightLine -> {
+                    straightLine.setStrokeWidth(value);
+                });
+            }
+        } catch (NumberFormatException ex) {
+        }
     }
 
     @FXML
@@ -215,11 +224,36 @@ public class MainController {
                 .bind(Bindings.createBooleanBinding(() -> selectedLines.isEmpty(), selectedLines));
     }
 
+    private void initializeInspector() {
+        selectedLines.addListener(new SetChangeListener<StraightLine>() {
+            @Override
+            public void onChanged(Change<? extends StraightLine> change) {
+                lineWidthTextField.setText(findCommonStrokeWidth());
+            }
+
+            private String findCommonStrokeWidth() {
+                boolean foundOne = false;
+                double width = 0.0;
+                for (var l : selectedLines) {
+                    if (!foundOne) {
+                        width = l.getStrokeWidth();
+                        foundOne = true;
+                    } else {
+                        if (width != l.getStrokeWidth())
+                            return "";
+                    }
+                }
+                return foundOne ? String.valueOf(width) : "";
+            }
+        });
+    }
+
     public void initialize() {
         linesEditor = new LinesEditor(editorPane);
         setClipping();
         initializeToolPalette();
         initializeMenus();
+        initializeInspector();
         observeDocument();
         observeSelection();
 
