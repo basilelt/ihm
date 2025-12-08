@@ -12,10 +12,11 @@ public class MainController {
     private Canvas canvas;
 
     private static final int NUM_POINTS = 4;
-    private static final double CANVAS_WIDTH = 340.0;
-    private static final double CANVAS_HEIGHT = 340.0;
+    private static final double CURVE_WIDTH = 340.0;
+    private static final double CURVE_HEIGHT = 340.0;
     private static final double MAX_Y = 255.0;
     private static final double POINT_RADIUS = 5.0;
+    private static final double MARGIN = POINT_RADIUS + 2.0; // Margin to ensure full points are visible
 
     private double[] xPoints = new double[NUM_POINTS];
     private double[] yPoints = new double[NUM_POINTS];
@@ -23,9 +24,9 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        // Initialize control points
+        // Initialize control points (in curve coordinates, 0 to CURVE_WIDTH)
         for (int i = 0; i < NUM_POINTS; i++) {
-            xPoints[i] = i * (CANVAS_WIDTH / (NUM_POINTS - 1));
+            xPoints[i] = i * (CURVE_WIDTH / (NUM_POINTS - 1));
             yPoints[i] = 128.0; // Initial y value
         }
 
@@ -42,8 +43,10 @@ public class MainController {
         double mouseY = event.getY();
 
         for (int i = 0; i < NUM_POINTS; i++) {
-            double dx = mouseX - xPoints[i];
-            double dy = mouseY - valueToCanvasY(yPoints[i]);
+            double canvasX = curveXToCanvasX(xPoints[i]);
+            double canvasY = valueToCanvasY(yPoints[i]);
+            double dx = mouseX - canvasX;
+            double dy = mouseY - canvasY;
             if (dx * dx + dy * dy <= POINT_RADIUS * POINT_RADIUS) {
                 draggingIndex = i;
                 break;
@@ -65,19 +68,24 @@ public class MainController {
 
     private void draw() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        double canvasWidth = CURVE_WIDTH + 2 * MARGIN;
+        double canvasHeight = CURVE_HEIGHT + 2 * MARGIN;
+        gc.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        // Draw curve
-        gc.setStroke(Color.BLUE);
+        // Draw curve with clamped values (flat against boundaries when out of range)
+        gc.setStroke(Color.BLACK);
         gc.setLineWidth(2.0);
-        for (double x = 0; x < CANVAS_WIDTH; x += 1.0) {
+        gc.beginPath();
+        for (double x = 0; x <= CURVE_WIDTH; x += 1.0) {
             double y = lagrangeInterpolate(x);
+            // Clamp y to [0, MAX_Y] range - this makes curve flat against boundaries
+            y = Math.max(0.0, Math.min(MAX_Y, y));
+            double canvasX = curveXToCanvasX(x);
             double canvasY = valueToCanvasY(y);
             if (x == 0) {
-                gc.beginPath();
-                gc.moveTo(x, canvasY);
+                gc.moveTo(canvasX, canvasY);
             } else {
-                gc.lineTo(x, canvasY);
+                gc.lineTo(canvasX, canvasY);
             }
         }
         gc.stroke();
@@ -85,8 +93,9 @@ public class MainController {
         // Draw control points
         gc.setFill(Color.GRAY);
         for (int i = 0; i < NUM_POINTS; i++) {
+            double canvasX = curveXToCanvasX(xPoints[i]);
             double canvasY = valueToCanvasY(yPoints[i]);
-            gc.fillOval(xPoints[i] - POINT_RADIUS, canvasY - POINT_RADIUS, POINT_RADIUS * 2, POINT_RADIUS * 2);
+            gc.fillOval(canvasX - POINT_RADIUS, canvasY - POINT_RADIUS, POINT_RADIUS * 2, POINT_RADIUS * 2);
         }
     }
 
@@ -104,14 +113,26 @@ public class MainController {
         return result;
     }
 
-    private double valueToCanvasY(double value) {
-        // Map 0 -> CANVAS_HEIGHT, MAX_Y -> 0
-        return CANVAS_HEIGHT - (value / MAX_Y) * CANVAS_HEIGHT;
+    // Convert curve X coordinate to canvas X coordinate (add left margin)
+    private double curveXToCanvasX(double curveX) {
+        return curveX + MARGIN;
     }
 
+    // Convert canvas X coordinate to curve X coordinate (remove left margin)
+    private double canvasXToCurveX(double canvasX) {
+        return canvasX - MARGIN;
+    }
+
+    // Convert value (0-255) to canvas Y coordinate (with top margin)
+    private double valueToCanvasY(double value) {
+        // Map MAX_Y -> MARGIN (top), 0 -> CURVE_HEIGHT + MARGIN (bottom)
+        return MARGIN + CURVE_HEIGHT - (value / MAX_Y) * CURVE_HEIGHT;
+    }
+
+    // Convert canvas Y coordinate to value (0-255)
     private double canvasYToValue(double canvasY) {
         // Inverse mapping
-        return MAX_Y - (canvasY / CANVAS_HEIGHT) * MAX_Y;
+        return MAX_Y - ((canvasY - MARGIN) / CURVE_HEIGHT) * MAX_Y;
     }
 
     @FXML
