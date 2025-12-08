@@ -3,6 +3,7 @@ package ensisa.curves;
 import javafx.application.*;
 import javafx.fxml.*;
 import javafx.scene.*;
+import javafx.stage.*;
 
 import java.io.*;
 
