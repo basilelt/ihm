@@ -23,6 +23,7 @@
         <module>cm-exemple</module>
         <module>lines</module>
         <module>birds</module>
+        <module>curves</module>
     </modules>
 
     <dependencyManagement>
