@@ -45,7 +45,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ensisa.curves.MainController">
    <children>
-      <VBox prefHeight="513.0" prefWidth="684.0" style="-fx-background-color: light-gray;">
+      <VBox prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: light-gray;">
         <children>
           <MenuBar VBox.vgrow="NEVER">
             <menus>
