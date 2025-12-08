@@ -33,6 +33,7 @@
 -->
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -84,7 +85,11 @@
                <children>
                   <Line endX="30.0" endY="370.0" startX="30.0" startY="30.0" strokeWidth="2.0" />
                   <Line endX="370.0" endY="370.0" startX="30.0" startY="370.0" strokeWidth="2.0" />
-                  <Pane layoutX="30.0" layoutY="30.0" prefHeight="340.0" prefWidth="340.0" />
+                  <Pane layoutX="30.0" layoutY="30.0" prefHeight="340.0" prefWidth="340.0">
+                     <children>
+                        <Canvas fx:id="canvas" height="340.0" width="340.0" />
+                     </children>
+                  </Pane>
                </children>
             </Pane>
         </children>
