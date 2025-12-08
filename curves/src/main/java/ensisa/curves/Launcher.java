@@ -1,9 +1,9 @@
 package ensisa.curves;
 
-import javafx.application.Application;
+import javafx.application.*;
 
 public class Launcher {
     public static void main(String[] args) {
-        Application.launch(HelloApplication.class, args);
+        Application.launch(CurvesApplication.class, args);
     }
 }
