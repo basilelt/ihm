@@ -60,8 +60,8 @@
               </Menu>
               <Menu mnemonicParsing="false" text="Edition">
                 <items>
-                  <MenuItem fx:id="initialStateMenu" mnemonicParsing="false" onAction="#initialStateAction" text="Initial State" />
-                  <MenuItem fx:id="yEqualsXMenu" mnemonicParsing="false" onAction="#yEqualsXAction" text="y = x" />
+                  <MenuItem fx:id="initialStateMenu" mnemonicParsing="false" onAction="#initialStateAction" text="Courbe polynomiale" />
+                  <MenuItem fx:id="yEqualsXMenu" mnemonicParsing="false" onAction="#yEqualsXAction" text="Courbe y = x" />
                 </items>
               </Menu>
             </menus>
