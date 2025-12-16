@@ -71,6 +71,8 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Select All" />
                   <MenuItem mnemonicParsing="false" text="Unselect All" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="yEqualsXMenu" mnemonicParsing="false" onAction="#yEqualsXAction" text="y = x" />
                 </items>
               </Menu>
             </menus>

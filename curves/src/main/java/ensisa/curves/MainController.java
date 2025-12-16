@@ -4,12 +4,16 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class MainController {
     @FXML
     private Canvas canvas;
+    
+    @FXML
+    private MenuItem yEqualsXMenu;
 
     private static final int NUM_POINTS = 8;
     private static final double CURVE_WIDTH = 340.0;
@@ -138,5 +142,16 @@ public class MainController {
     @FXML
     private void quitMenuAction() {
         Platform.exit();
+    }
+    
+    @FXML
+    private void yEqualsXAction() {
+        // Set control points to create y = x curve
+        // Map X coordinates (0 to CURVE_WIDTH) to Y coordinates (0 to MAX_Y)
+        for (int i = 0; i < NUM_POINTS; i++) {
+            // y = (x / CURVE_WIDTH) * MAX_Y
+            yPoints[i] = (xPoints[i] / CURVE_WIDTH) * MAX_Y;
+        }
+        draw();
     }
 }
