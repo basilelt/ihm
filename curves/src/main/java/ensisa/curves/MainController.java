@@ -13,6 +13,9 @@ public class MainController {
     private Canvas canvas;
     
     @FXML
+    private MenuItem initialStateMenu;
+    
+    @FXML
     private MenuItem yEqualsXMenu;
 
     private static final int NUM_POINTS = 8;
@@ -142,6 +145,15 @@ public class MainController {
     @FXML
     private void quitMenuAction() {
         Platform.exit();
+    }
+    
+    @FXML
+    private void initialStateAction() {
+        // Reset curve to initial state (flat line at y = 128)
+        for (int i = 0; i < NUM_POINTS; i++) {
+            yPoints[i] = 128.0; // Initial y value
+        }
+        draw();
     }
     
     @FXML
