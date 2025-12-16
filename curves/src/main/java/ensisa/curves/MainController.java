@@ -11,7 +11,7 @@ public class MainController {
     @FXML
     private Canvas canvas;
 
-    private static final int NUM_POINTS = 4;
+    private static final int NUM_POINTS = 8;
     private static final double CURVE_WIDTH = 340.0;
     private static final double CURVE_HEIGHT = 340.0;
     private static final double MAX_Y = 255.0;
