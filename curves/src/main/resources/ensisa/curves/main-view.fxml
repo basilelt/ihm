@@ -44,6 +44,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
@@ -143,15 +144,12 @@
                   <VBox alignment="CENTER">
                      <children>
                         <Label style="-fx-font-weight: bold;" text="Image filtrée" />
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0"
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0"
                            prefWidth="600.0" style="-fx-background-color: white;">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
                            <children>
                               <ImageView fx:id="imageView" preserveRatio="true" />
                            </children>
-                        </Pane>
+                        </StackPane>
                      </children>
                   </VBox>
                </children>

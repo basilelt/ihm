@@ -25,6 +25,7 @@ import javafx.stage.FileChooser;
 import javafx.scene.layout.Pane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.layout.StackPane;
 
 public class MainController {
     @FXML
@@ -401,22 +402,19 @@ public class MainController {
         bluePane.heightProperty().addListener((obs, oldVal, newVal) -> updateCanvasSize(blueCanvas, bluePane));
 
         // Add resize listener for image panel
-        Pane imagePane = (Pane) imageView.getParent();
+        StackPane imagePane = (StackPane) imageView.getParent();
         imagePane.widthProperty().addListener((obs, oldVal, newVal) -> updateImageSize(imagePane));
         imagePane.heightProperty().addListener((obs, oldVal, newVal) -> updateImageSize(imagePane));
     }
 
-    private void updateImageSize(Pane imagePane) {
+    private void updateImageSize(StackPane imagePane) {
         double paneWidth = imagePane.getWidth();
         double paneHeight = imagePane.getHeight();
 
         if (paneWidth > 0 && paneHeight > 0) {
-            // Account for padding (10px on each side)
-            double availableWidth = paneWidth - 20;
-            double availableHeight = paneHeight - 20;
-
-            imageView.setFitWidth(availableWidth);
-            imageView.setFitHeight(availableHeight);
+            // Use full pane dimensions
+            imageView.setFitWidth(paneWidth);
+            imageView.setFitHeight(paneHeight);
         }
     }
 
@@ -472,7 +470,7 @@ public class MainController {
         updateCanvasSize(blueCanvas, bluePane);
 
         // Initialize image size
-        Pane imagePane = (Pane) imageView.getParent();
+        StackPane imagePane = (StackPane) imageView.getParent();
         updateImageSize(imagePane);
     }
 }
