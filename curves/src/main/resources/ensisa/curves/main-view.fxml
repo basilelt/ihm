@@ -38,6 +38,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -45,29 +46,40 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ensisa.curves.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0"
+   xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+   fx:controller="ensisa.curves.MainController">
    <children>
-      <VBox prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: light-gray;">
-        <children>
-          <MenuBar VBox.vgrow="NEVER">
-            <menus>
-              <Menu mnemonicParsing="false" text="Fichier">
-                <items>
-                  <MenuItem fx:id="quitMenu" mnemonicParsing="false" onAction="#quitMenuAction" text="Quitter">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="Q" control="UP" meta="DOWN" shift="UP" shortcut="UP" />
-                           </accelerator>
+      <VBox prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: lightgray;">
+         <children>
+            <MenuBar VBox.vgrow="NEVER">
+               <menus>
+                  <Menu mnemonicParsing="false" text="Fichier">
+                     <items>
+                        <MenuItem fx:id="openMenuItem" mnemonicParsing="false"
+                           onAction="#openImageAction" text="Ouvrir...">
                         </MenuItem>
-                </items>
-              </Menu>
-              <Menu mnemonicParsing="false" text="Edition">
-                <items>
-                  <MenuItem fx:id="initialStateMenu" mnemonicParsing="false" onAction="#initialStateAction" text="Courbe polynomiale" />
-                  <MenuItem fx:id="yEqualsXMenu" mnemonicParsing="false" onAction="#yEqualsXAction" text="Courbe y = x" />
-                </items>
-              </Menu>
-            </menus>
-          </MenuBar>
+                        <MenuItem fx:id="quitMenu" mnemonicParsing="false"
+                           onAction="#quitMenuAction" text="Quitter">
+                        </MenuItem>
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Edition">
+                     <items>
+                        <MenuItem fx:id="undoMenuItem" mnemonicParsing="false"
+                           onAction="#undoAction" text="Annuler">
+                        </MenuItem>
+                        <MenuItem fx:id="redoMenuItem" mnemonicParsing="false"
+                           onAction="#redoAction" text="Rétablir">
+                        </MenuItem>
+                        <MenuItem fx:id="initialStateMenu" mnemonicParsing="false"
+                           onAction="#initialStateAction" text="Courbe polynomiale" />
+                        <MenuItem fx:id="yEqualsXMenu" mnemonicParsing="false"
+                           onAction="#yEqualsXAction" text="Courbe y = x" />
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
             <HBox spacing="10.0">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -77,18 +89,22 @@
                   <VBox>
                      <children>
                         <Label style="-fx-font-weight: bold;" text="Rouge" />
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: white;">
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0"
+                           prefWidth="400.0" style="-fx-background-color: white;">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                            <children>
-                              <Line endX="30.0" endY="370.0" startX="30.0" startY="30.0" strokeWidth="2.0" />
-                              <Line endX="370.0" endY="370.0" startX="30.0" startY="370.0" strokeWidth="2.0" />
-                              <Pane layoutX="23.0" layoutY="23.0" prefHeight="354.0" prefWidth="354.0">
-                                  <children>
-                                     <Canvas fx:id="redCanvas" height="354.0" width="354.0" />
-                                  </children>
-                               </Pane>
+                              <Line endX="30.0" endY="370.0" startX="30.0" startY="30.0"
+                                 strokeWidth="2.0" />
+                              <Line endX="370.0" endY="370.0" startX="30.0" startY="370.0"
+                                 strokeWidth="2.0" />
+                              <Pane layoutX="23.0" layoutY="23.0" prefHeight="354.0"
+                                 prefWidth="354.0">
+                                 <children>
+                                    <Canvas fx:id="redCanvas" height="354.0" width="354.0" />
+                                 </children>
+                              </Pane>
                            </children>
                         </Pane>
                      </children>
@@ -97,18 +113,22 @@
                   <VBox>
                      <children>
                         <Label style="-fx-font-weight: bold;" text="Vert" />
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: white;">
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0"
+                           prefWidth="400.0" style="-fx-background-color: white;">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                            <children>
-                              <Line endX="30.0" endY="370.0" startX="30.0" startY="30.0" strokeWidth="2.0" />
-                              <Line endX="370.0" endY="370.0" startX="30.0" startY="370.0" strokeWidth="2.0" />
-                              <Pane layoutX="23.0" layoutY="23.0" prefHeight="354.0" prefWidth="354.0">
-                                  <children>
-                                     <Canvas fx:id="greenCanvas" height="354.0" width="354.0" />
-                                  </children>
-                               </Pane>
+                              <Line endX="30.0" endY="370.0" startX="30.0" startY="30.0"
+                                 strokeWidth="2.0" />
+                              <Line endX="370.0" endY="370.0" startX="30.0" startY="370.0"
+                                 strokeWidth="2.0" />
+                              <Pane layoutX="23.0" layoutY="23.0" prefHeight="354.0"
+                                 prefWidth="354.0">
+                                 <children>
+                                    <Canvas fx:id="greenCanvas" height="354.0" width="354.0" />
+                                 </children>
+                              </Pane>
                            </children>
                         </Pane>
                      </children>
@@ -117,25 +137,45 @@
                   <VBox>
                      <children>
                         <Label style="-fx-font-weight: bold;" text="Bleu" />
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: white;">
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0"
+                           prefWidth="400.0" style="-fx-background-color: white;">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                            <children>
-                              <Line endX="30.0" endY="370.0" startX="30.0" startY="30.0" strokeWidth="2.0" />
-                              <Line endX="370.0" endY="370.0" startX="30.0" startY="370.0" strokeWidth="2.0" />
-                              <Pane layoutX="23.0" layoutY="23.0" prefHeight="354.0" prefWidth="354.0">
-                                  <children>
-                                     <Canvas fx:id="blueCanvas" height="354.0" width="354.0" />
-                                  </children>
-                               </Pane>
+                              <Line endX="30.0" endY="370.0" startX="30.0" startY="30.0"
+                                 strokeWidth="2.0" />
+                              <Line endX="370.0" endY="370.0" startX="30.0" startY="370.0"
+                                 strokeWidth="2.0" />
+                              <Pane layoutX="23.0" layoutY="23.0" prefHeight="354.0"
+                                 prefWidth="354.0">
+                                 <children>
+                                    <Canvas fx:id="blueCanvas" height="354.0" width="354.0" />
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                  <!-- Filtered Image Panel -->
+                  <VBox>
+                     <children>
+                        <Label style="-fx-font-weight: bold;" text="Image filtrée" />
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0"
+                           prefWidth="400.0" style="-fx-background-color: white;">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <children>
+                              <ImageView fx:id="imageView" fitHeight="354.0" fitWidth="354.0"
+                                 preserveRatio="true" />
                            </children>
                         </Pane>
                      </children>
                   </VBox>
                </children>
             </HBox>
-        </children>
+         </children>
       </VBox>
    </children>
 </AnchorPane>
