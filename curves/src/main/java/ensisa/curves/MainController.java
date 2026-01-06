@@ -22,6 +22,9 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.scene.layout.Pane;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class MainController {
     @FXML
@@ -56,11 +59,13 @@ public class MainController {
     private Image filteredImage;
 
     private static final int NUM_POINTS = 8;
-    private static final double CURVE_WIDTH = 340.0;
-    private static final double CURVE_HEIGHT = 340.0;
     private static final double MAX_Y = 255.0;
     private static final double POINT_RADIUS = 5.0;
     private static final double MARGIN = POINT_RADIUS + 2.0; // Margin to ensure full points are visible
+
+    // Dynamic curve dimensions (calculated from canvas size)
+    private double curveWidth = 340.0;
+    private double curveHeight = 340.0;
 
     // Control points for each color channel
     private double[] xPoints = new double[NUM_POINTS];
@@ -78,7 +83,7 @@ public class MainController {
     public void initialize() {
         // Initialize X control points (same for all curves)
         for (int i = 0; i < NUM_POINTS; i++) {
-            xPoints[i] = i * (CURVE_WIDTH / (NUM_POINTS - 1));
+            xPoints[i] = i * (curveWidth / (NUM_POINTS - 1));
             redYPoints[i] = 128.0; // Initial y value
             greenYPoints[i] = 128.0; // Initial y value
             blueYPoints[i] = 128.0; // Initial y value
@@ -97,6 +102,16 @@ public class MainController {
         undoMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
         redoMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN));
 
+        // Add resize listeners to make canvases dynamic
+        setupDynamicResizing();
+
+        // Set initial canvas sizes
+        Platform.runLater(() -> {
+            initializeCanvasSizes();
+            drawAll();
+        });
+
+        // Draw initial state
         drawAll();
     }
 
@@ -164,15 +179,23 @@ public class MainController {
 
     private void drawCanvas(Canvas canvas, double[] yPoints, Color curveColor) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        double canvasWidth = CURVE_WIDTH + 2 * MARGIN;
-        double canvasHeight = CURVE_HEIGHT + 2 * MARGIN;
+        double canvasWidth = canvas.getWidth();
+        double canvasHeight = canvas.getHeight();
         gc.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        // Draw axes
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2.0);
+        // Y-axis (vertical)
+        gc.strokeLine(MARGIN, MARGIN, MARGIN, MARGIN + curveHeight);
+        // X-axis (horizontal)
+        gc.strokeLine(MARGIN, MARGIN + curveHeight, MARGIN + curveWidth, MARGIN + curveHeight);
 
         // Draw curve with clamped values (flat against boundaries when out of range)
         gc.setStroke(curveColor);
         gc.setLineWidth(2.0);
         gc.beginPath();
-        for (double x = 0; x <= CURVE_WIDTH; x += 1.0) {
+        for (double x = 0; x <= curveWidth; x += 1.0) {
             double y = lagrangeInterpolate(x, yPoints);
             // Clamp y to [0, MAX_Y] range - this makes curve flat against boundaries
             y = Math.max(0.0, Math.min(MAX_Y, y));
@@ -184,8 +207,6 @@ public class MainController {
                 gc.lineTo(canvasX, canvasY);
             }
         }
-        gc.stroke();
-
         gc.stroke();
 
         // Draw control points
@@ -224,13 +245,13 @@ public class MainController {
     // Convert value (0-255) to canvas Y coordinate (with top margin)
     private double valueToCanvasY(double value) {
         // Map MAX_Y -> MARGIN (top), 0 -> CURVE_HEIGHT + MARGIN (bottom)
-        return MARGIN + CURVE_HEIGHT - (value / MAX_Y) * CURVE_HEIGHT;
+        return MARGIN + curveHeight - (value / MAX_Y) * curveHeight;
     }
 
     // Convert canvas Y coordinate to value (0-255)
     private double canvasYToValue(double canvasY) {
         // Inverse mapping
-        return MAX_Y - ((canvasY - MARGIN) / CURVE_HEIGHT) * MAX_Y;
+        return MAX_Y - ((canvasY - MARGIN) / curveHeight) * MAX_Y;
     }
 
     @FXML
@@ -263,7 +284,7 @@ public class MainController {
         double[] newGreen = new double[NUM_POINTS];
         double[] newBlue = new double[NUM_POINTS];
         for (int i = 0; i < NUM_POINTS; i++) {
-            double yValue = (xPoints[i] / CURVE_WIDTH) * MAX_Y;
+            double yValue = (xPoints[i] / curveWidth) * MAX_Y;
             newRed[i] = yValue;
             newGreen[i] = yValue;
             newBlue[i] = yValue;
@@ -352,7 +373,7 @@ public class MainController {
     private double[] buildLut(double[] yPoints) {
         double[] lut = new double[256];
         for (int i = 0; i < 256; i++) {
-            double x = (i / 255.0) * CURVE_WIDTH;
+            double x = (i / 255.0) * curveWidth;
             double y = Math.max(0.0, Math.min(MAX_Y, lagrangeInterpolate(x, yPoints)));
             lut[i] = y;
         }
@@ -361,5 +382,74 @@ public class MainController {
 
     private int clampToByte(double value) {
         return (int) Math.max(0, Math.min(255, Math.round(value)));
+    }
+
+    private void setupDynamicResizing() {
+        // Get the parent panes for each canvas
+        Pane redPane = (Pane) redCanvas.getParent().getParent();
+        Pane greenPane = (Pane) greenCanvas.getParent().getParent();
+        Pane bluePane = (Pane) blueCanvas.getParent().getParent();
+
+        // Add resize listeners
+        redPane.widthProperty().addListener((obs, oldVal, newVal) -> updateCanvasSize(redCanvas, redPane));
+        redPane.heightProperty().addListener((obs, oldVal, newVal) -> updateCanvasSize(redCanvas, redPane));
+
+        greenPane.widthProperty().addListener((obs, oldVal, newVal) -> updateCanvasSize(greenCanvas, greenPane));
+        greenPane.heightProperty().addListener((obs, oldVal, newVal) -> updateCanvasSize(greenCanvas, greenPane));
+
+        bluePane.widthProperty().addListener((obs, oldVal, newVal) -> updateCanvasSize(blueCanvas, bluePane));
+        bluePane.heightProperty().addListener((obs, oldVal, newVal) -> updateCanvasSize(blueCanvas, bluePane));
+    }
+
+    private void updateCanvasSize(Canvas canvas, Pane parentPane) {
+        double paneWidth = parentPane.getWidth();
+        double paneHeight = parentPane.getHeight();
+
+        if (paneWidth > 0 && paneHeight > 0) {
+            // Update curve dimensions (leave margin for axes)
+            curveWidth = paneWidth - 40; // 20px margin on each side
+            curveHeight = paneHeight - 40; // 20px margin on each side
+
+            // Update canvas size
+            double canvasWidth = curveWidth + 2 * MARGIN;
+            double canvasHeight = curveHeight + 2 * MARGIN;
+
+            canvas.setWidth(canvasWidth);
+            canvas.setHeight(canvasHeight);
+
+            // Position canvas pane to align with axes
+            Pane canvasPane = (Pane) canvas.getParent();
+            canvasPane.setLayoutX(20 - MARGIN); // 20px margin - MARGIN offset
+            canvasPane.setLayoutY(20 - MARGIN);
+
+            // Update X control points
+            for (int i = 0; i < NUM_POINTS; i++) {
+                xPoints[i] = i * (curveWidth / (NUM_POINTS - 1));
+            }
+
+            // Redraw the canvas
+            double[] yPoints = getYPointsForCanvas(canvas);
+            drawCanvas(canvas, yPoints, getCanvasColor(canvas));
+        }
+    }
+
+    private double[] getYPointsForCanvas(Canvas canvas) {
+        if (canvas == redCanvas)
+            return redYPoints;
+        if (canvas == greenCanvas)
+            return greenYPoints;
+        if (canvas == blueCanvas)
+            return blueYPoints;
+        return new double[0];
+    }
+
+    private void initializeCanvasSizes() {
+        Pane redPane = (Pane) redCanvas.getParent().getParent();
+        Pane greenPane = (Pane) greenCanvas.getParent().getParent();
+        Pane bluePane = (Pane) blueCanvas.getParent().getParent();
+
+        updateCanvasSize(redCanvas, redPane);
+        updateCanvasSize(greenCanvas, greenPane);
+        updateCanvasSize(blueCanvas, bluePane);
     }
 }
