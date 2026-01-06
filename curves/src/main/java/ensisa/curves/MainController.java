@@ -399,6 +399,25 @@ public class MainController {
 
         bluePane.widthProperty().addListener((obs, oldVal, newVal) -> updateCanvasSize(blueCanvas, bluePane));
         bluePane.heightProperty().addListener((obs, oldVal, newVal) -> updateCanvasSize(blueCanvas, bluePane));
+
+        // Add resize listener for image panel
+        Pane imagePane = (Pane) imageView.getParent();
+        imagePane.widthProperty().addListener((obs, oldVal, newVal) -> updateImageSize(imagePane));
+        imagePane.heightProperty().addListener((obs, oldVal, newVal) -> updateImageSize(imagePane));
+    }
+
+    private void updateImageSize(Pane imagePane) {
+        double paneWidth = imagePane.getWidth();
+        double paneHeight = imagePane.getHeight();
+
+        if (paneWidth > 0 && paneHeight > 0) {
+            // Account for padding (10px on each side)
+            double availableWidth = paneWidth - 20;
+            double availableHeight = paneHeight - 20;
+
+            imageView.setFitWidth(availableWidth);
+            imageView.setFitHeight(availableHeight);
+        }
     }
 
     private void updateCanvasSize(Canvas canvas, Pane parentPane) {
@@ -451,5 +470,9 @@ public class MainController {
         updateCanvasSize(redCanvas, redPane);
         updateCanvasSize(greenCanvas, greenPane);
         updateCanvasSize(blueCanvas, bluePane);
+
+        // Initialize image size
+        Pane imagePane = (Pane) imageView.getParent();
+        updateImageSize(imagePane);
     }
 }
